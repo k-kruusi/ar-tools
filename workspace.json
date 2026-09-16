@@ -1,0 +1,24 @@
+{
+  "description": "Developer MCP tools — file I/O, shell, grep, glob, tree-sitter symbol reading, JSON data-lens, web fetch. Gives any model on the mesh the same capabilities as built-in CLI tools, plus extras.",
+  "package": "./packages/tools",
+  "start": "npx tsx src/index.ts",
+  "autoStart": true,
+  "port": 3012,
+  "restart": "on-failure",
+  "maxRestarts": 3,
+  "mcp": {
+    "expose": {
+      "transport": "sse",
+      "port": 3012,
+      "path": "/mcp",
+      "notification": "Developer tools online. Tools: run_command, read_file, write_file, edit_file, edit_range, edit_symbol, glob_files, grep_search, web_fetch, file_outline, read_symbol, read_symbols, typecheck, vitals, data_shape, data_select."
+    }
+  },
+  "healthCheck": {
+    "type": "port",
+    "intervalSeconds": 30,
+    "port": 3012,
+    "action": "restart"
+  },
+  "templateName": "tools"
+}

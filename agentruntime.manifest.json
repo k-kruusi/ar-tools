@@ -1,0 +1,46 @@
+{
+  "name": "@agentruntime/tools",
+  "version": "1.0.0",
+  "description": "🛠️ Developer tools MCP — bash, file read/write/edit, glob, grep, web fetch",
+  "runtime": "node",
+  "start": "npx tsx src/index.ts",
+  "build": "npm install --production",
+  "distribution": "slim",
+  "permissions": {
+    "network": false,
+    "filesystem": "readwrite",
+    "ports": [3012],
+    "mcp": {
+      "expose": true
+    }
+  },
+  "env": {
+    "TOOLS": {
+      "description": "Comma-separated list of tools to register at startup. Omitting this env var enables ALL tools. Set to a restricted subset for read-only or sandboxed deployments.",
+      "example": "read,glob,grep,web-fetch",
+      "allowedValues": ["bash", "read", "write", "edit", "glob", "grep", "web-fetch", "vitals"],
+      "default": "bash,read,write,edit,glob,grep,web-fetch,vitals",
+      "security": "Restricting this list is the primary mechanism for limiting surface area. A container without 'bash' cannot execute arbitrary shell commands. A container without 'write' and 'edit' is effectively read-only."
+    }
+  },
+  "template": {
+    "autoStart": true,
+    "port": 3012,
+    "restart": "on-failure",
+    "maxRestarts": 3,
+    "mcp": {
+      "expose": {
+        "transport": "sse",
+        "port": 3012,
+        "path": "/mcp",
+        "notification": "Developer tools online. Tools: run_command, read_file, write_file, edit_file, glob_files, grep_search, web_fetch."
+      }
+    },
+    "healthCheck": {
+      "type": "port",
+      "intervalSeconds": 30,
+      "port": 3012,
+      "action": "restart"
+    }
+  }
+}

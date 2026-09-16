@@ -1,0 +1,32 @@
+{
+  "//": [
+    "Emit config for the stdio entry. The sibling tsconfig.json is noEmit:true — a",
+    "typecheck-only config — so there was no build output at all before this.",
+    "",
+    "Why emit exists (2026-07-31): every claude-code turn tears down its Worker and",
+    "respawns the stdio MCP children, and each child pays tsx compiling stdio.ts's",
+    "whole module graph. Measured on this box: plain node ~70ms, node --import tsx",
+    "~218ms, node --import tsx + stdio.ts ~1195ms — and the evolve chain pays it",
+    "TWICE (bridge + child), so ~2s of every turn is spent recompiling an unchanged",
+    "file. That is the window in which a fresh worker's first tool call arrives",
+    "before tools/list has registered: 53 'No such tool available: mcp__ar-tools__*'",
+    "misses in one cartridge log, 50 of which recovered on a later call.",
+    "",
+    "Consuming this build is GATED ON MTIME at spawn (container-manager.ts): dist is",
+    "used only when newer than the newest src input, else the tsx path runs. Nothing",
+    "in the tree checks this output's currency — packages/tools is not a `file:`",
+    "target of any cartridge, so rebuild-all's discovery never reaches it, and",
+    "check-stale only tests existence. The mtime gate is therefore the ONLY guard,",
+    "and it is what keeps a stale build from silently serving every agent's file and",
+    "shell tools. Worst case is the cost we already pay."
+  ],
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": false,
+    "sourceMap": true
+  },
+  "exclude": ["src/__tests__", "node_modules", "dist"]
+}

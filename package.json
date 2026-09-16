@@ -1,0 +1,37 @@
+{
+  "license": "MIT",
+  "name": "@agentruntime/tools",
+  "version": "1.0.0",
+  "description": "Developer tools as MCP server — bash, file read/write/edit, glob, grep, web fetch",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx src/index.ts",
+    "start:stdio": "npx tsx src/stdio.ts",
+    "dev": "npx tsx watch src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "@agentruntime/ccr-store": "file:../../dependencies/ccr-store",
+    "@agentruntime/html-extract": "file:../../dependencies/html-extract",
+    "@agentruntime/log-as-state": "file:../../dependencies/log-as-state",
+    "@agentruntime/secret-scrub": "file:../../dependencies/secret-scrub",
+    "@agentruntime/token-funnel": "file:../../dependencies/token-funnel",
+    "@agentruntime/tree-sitter": "file:../../dependencies/tree-sitter",
+    "@agentruntime/url-guard": "file:../../dependencies/url-guard",
+    "@helmetfire-labs/cartridge-common": "file:../../dependencies/cartridge-common",
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "glob": "^11.0.0",
+    "jmespath": "^0.16.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/jmespath": "^0.15.2",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.18"
+  }
+}
